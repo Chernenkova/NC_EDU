@@ -1,13 +1,15 @@
 package Elena.Chernenkova.wrapper;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Set;
 
 /**
  * Created by 123 on 01.10.2017.
  */
 public class LessonWrapper {
-    private String lessonName, start, finish, place;
+    private String lessonName;
+    private String lessonDate;
+    private String lessonPlace;
     private Integer teacher;
     private Set<Integer> students;
 
@@ -21,28 +23,20 @@ public class LessonWrapper {
         this.lessonName = lessonName;
     }
 
-    public String getStart() {
-        return start;
+    public String getLessonDate() {
+        return lessonDate;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setLessonDate(String lessonDate) {
+        this.lessonDate = lessonDate;
     }
 
-    public String getFinish() {
-        return finish;
+    public String getLessonPlace() {
+        return lessonPlace;
     }
 
-    public void setFinish(String finish) {
-        this.finish = finish;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
+    public void setLessonPlace(String lessonPlace) {
+        this.lessonPlace = lessonPlace;
     }
 
     public Integer getTeacher() {

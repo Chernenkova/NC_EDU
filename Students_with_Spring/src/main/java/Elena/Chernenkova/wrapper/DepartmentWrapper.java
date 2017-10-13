@@ -4,7 +4,9 @@ package Elena.Chernenkova.wrapper;
  * Created by 123 on 01.10.2017.
  */
 public class DepartmentWrapper {
-    private String departmentName, deanName, deanNumber;
+    private String departmentName;
+    private String deanName;
+    private String deanNumber;
 
     public DepartmentWrapper() {}
 
@@ -31,4 +33,5 @@ public class DepartmentWrapper {
     public void setDeanNumber(String deanNumber) {
         this.deanNumber = deanNumber;
     }
+
 }

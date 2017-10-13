@@ -20,7 +20,6 @@ public class Teacher implements Serializable{
     @GeneratedValue
     private Integer teacherId;
 
-
     @Column
     String teacherName;
     @Column
@@ -28,17 +27,17 @@ public class Teacher implements Serializable{
 
     @JsonIgnore
     @ManyToOne(targetEntity = Department.class)
-    private Department department;
+    private Department teacherDepartment;
 
     @JsonIgnore
     @OneToMany(targetEntity = Lesson.class)
-    private Set<Lesson> lessons;
+    private Set<Lesson> teacherLessons;
 
     public Teacher(TeacherWrapper teacherWrapper, Department department) {
         this.teacherName = teacherWrapper.getTeacherName();
         this.teacherNumber = teacherWrapper.getTeacherNumber();
-        this.department = department;
-        this.lessons = new HashSet<>();
+        this.teacherDepartment = department;
+        this.teacherLessons = new HashSet<>();
         department.getTeachers().add(this);
     }
 
@@ -68,19 +67,19 @@ public class Teacher implements Serializable{
         this.teacherNumber = teacherNumber;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Department getTeacherDepartment() {
+        return teacherDepartment;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setTeacherDepartment(Department department) {
+        this.teacherDepartment = department;
     }
 
-    public Set<Lesson> getLessons() {
-        return lessons;
+    public Set<Lesson> getTeacherLessons() {
+        return teacherLessons;
     }
 
-    public void setLessons(Set<Lesson> lessons) {
-        this.lessons = lessons;
+    public void setTeacherLessons(Set<Lesson> lessons) {
+        this.teacherLessons = lessons;
     }
 }

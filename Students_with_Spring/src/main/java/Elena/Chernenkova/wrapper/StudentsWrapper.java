@@ -6,32 +6,33 @@ import java.io.Serializable;
  * Created by 123 on 01.10.2017.
  */
 public class StudentsWrapper implements Serializable{
-    private String name, number;
-    private Integer department;
+    private String studentName;
+    private String studentNumber;
+    private Integer studentDepartment;
 
     public StudentsWrapper() {}
 
-    public String getName() {
-        return name;
+    public String getStudentName() {
+        return studentName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
-    public String getNumber() {
-        return number;
+    public String getStudentNumber() {
+        return studentNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setStudentNumber(String studentNumber) {
+        this.studentNumber = studentNumber;
     }
 
-    public Integer getDepartment() {
-        return department;
+    public Integer getStudentDepartment() {
+        return studentDepartment;
     }
 
-    public void setDepartment(Integer department) {
-        this.department = department;
+    public void setStudentDepartment(Integer studentDepartment) {
+        this.studentDepartment = studentDepartment;
     }
 }

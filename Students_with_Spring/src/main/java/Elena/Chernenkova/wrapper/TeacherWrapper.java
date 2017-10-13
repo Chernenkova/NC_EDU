@@ -4,8 +4,9 @@ package Elena.Chernenkova.wrapper;
  * Created by 123 on 01.10.2017.
  */
 public class TeacherWrapper {
-    private String teacherName, teacherNumber;
-    private Integer department;
+    private String teacherName;
+    private String teacherNumber;
+    private Integer teacherDepartment;
 
     public TeacherWrapper() {}
 
@@ -25,11 +26,11 @@ public class TeacherWrapper {
         this.teacherNumber = teacherNumber;
     }
 
-    public Integer getDepartment() {
-        return department;
+    public Integer getTeacherDepartment() {
+        return teacherDepartment;
     }
 
-    public void setDepartment(Integer department) {
-        this.department = department;
+    public void setTeacherDepartment(Integer teacherDepartment) {
+        this.teacherDepartment = teacherDepartment;
     }
 }

@@ -27,11 +27,11 @@ public class Department implements Serializable{
     String deanNumber;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "studentDepartment")
     private Set<Student> students;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "teacherDepartment")
     private Set<Teacher> teachers;
 
 

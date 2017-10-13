@@ -27,19 +27,13 @@ public class Student implements Serializable{
 
     @JsonIgnore
     @ManyToOne(targetEntity = Department.class)
-    private Department department;
-
-    @JsonIgnore
-    @ManyToMany(targetEntity = Lesson.class)
-    private Set<Lesson> lessons;
-
+    private Department studentDepartment;
 
     public Student(StudentsWrapper studentsWrapper, Department department) {
-        this.studentName = studentsWrapper.getName();
-        this.studentNumber = studentsWrapper.getNumber();
-        this.department = department;
+        this.studentName = studentsWrapper.getStudentName();
+        this.studentNumber = studentsWrapper.getStudentNumber();
+        this.studentDepartment = department;
         department.getStudents().add(this);
-        this.lessons = new HashSet<>();
     }
 
     public Student() {
@@ -69,19 +63,11 @@ public class Student implements Serializable{
         this.studentNumber = student_Number;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Department getStudentDepartment() {
+        return studentDepartment;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public Set<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setLessons(Set<Lesson> lessons) {
-        this.lessons = lessons;
+    public void setStudentDepartment(Department department) {
+        this.studentDepartment = department;
     }
 }

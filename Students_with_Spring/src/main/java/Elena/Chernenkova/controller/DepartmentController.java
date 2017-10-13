@@ -1,11 +1,10 @@
 package Elena.Chernenkova.controller;
 
+import Elena.Chernenkova.Service.DepartmentService;
 import Elena.Chernenkova.entity.Department;
-import Elena.Chernenkova.repository.DepartmentRepository;
 import Elena.Chernenkova.wrapper.DepartmentWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,54 +14,40 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/departments")
 public class DepartmentController {
-    private final DepartmentRepository departmentRepository;
+    private DepartmentService departmentService;
 
     @Autowired
-    DepartmentController(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
+    DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{departmentId}")
     ResponseEntity<Department> getDepartment(@PathVariable Integer departmentId){
-        return new ResponseEntity<Department>(departmentRepository.findOne(departmentId), HttpStatus.OK);
+        return departmentService.getDepartment(departmentId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    ResponseEntity getDepartments(){
-        return new ResponseEntity<>(departmentRepository.
-                findAll(new Sort("departmentName")), HttpStatus.OK);
+    ResponseEntity getAllDepartments(){
+        return departmentService.getAllDepartments();
     }
 
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<Department> createDepartment(@RequestBody DepartmentWrapper departmentWrapper){
-        Department newDepartment = new Department(departmentWrapper);
-        departmentRepository.save(newDepartment);
-        return new ResponseEntity<Department>(newDepartment, HttpStatus.CREATED);
+        return departmentService.createDepartment(departmentWrapper);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{departmentId}")
     ResponseEntity<Department> updateDepartment(@RequestBody DepartmentWrapper departmentWrapper, @PathVariable Integer departmentId){
-        Department currentDepartment = departmentRepository.findOne(departmentId);
-        currentDepartment.setDepartmentName(departmentWrapper.getDepartmentName());
-        currentDepartment.setDeanName(departmentWrapper.getDeanName());
-        currentDepartment.setDeanNumber(departmentWrapper.getDeanNumber());
-        departmentRepository.saveAndFlush(currentDepartment);
-        return new ResponseEntity<Department>(currentDepartment, HttpStatus.OK);
+        return departmentService.updateDepartment(departmentWrapper, departmentId);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{departmentId}")
     ResponseEntity deleteDepartment(@PathVariable Integer departmentId){
-        departmentRepository.delete(departmentId);
-        return new ResponseEntity(HttpStatus.OK);
+        return departmentService.deleteDepartment(departmentId);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
     ResponseEntity deleteAllDepartments(){
-        departmentRepository.deleteAll();
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    public DepartmentRepository getDepartmentRepository() {
-        return departmentRepository;
+        return departmentService.deleteAllDepartments();
     }
 }

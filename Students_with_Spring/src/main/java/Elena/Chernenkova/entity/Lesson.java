@@ -1,10 +1,11 @@
 package Elena.Chernenkova.entity;
 
+import Elena.Chernenkova.Service.LessonService;
 import Elena.Chernenkova.wrapper.LessonWrapper;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -20,30 +21,24 @@ public class Lesson implements Serializable{
     @Column
     String lessonName;
     @Column
-    String start;
+    Date lessonDate;
     @Column
-    String finish;
-    @Column
-    String place;
+    String lessonPlace;
 
     @ManyToOne(targetEntity = Teacher.class)
-    private Teacher teacher;
+    private Teacher lessonTeacher;
 
     @ManyToMany(targetEntity = Student.class)
     private Set<Student> students;
 
+    public Lesson() {}
 
     public Lesson(LessonWrapper lessonWrapper, Teacher teacher, Set<Student> students) {
         this.lessonName = lessonWrapper.getLessonName();
-        this.start = lessonWrapper.getStart();
-        this.finish = lessonWrapper.getFinish();
-        this.place = lessonWrapper.getPlace();
-        this.teacher = teacher;
+        this.lessonDate = LessonService.toDate(lessonWrapper.getLessonDate());
+        this.lessonPlace = lessonWrapper.getLessonPlace();
+        this.lessonTeacher = teacher;
         this.students = students;
-        teacher.getLessons().add(this);
-    }
-
-    public Lesson() {
     }
 
     public Integer getLessonId() {
@@ -62,36 +57,28 @@ public class Lesson implements Serializable{
         this.lessonName = lessonName;
     }
 
-    public String getStart() {
-        return start;
+    public Date getLessonDate() {
+        return lessonDate;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setLessonDate(Date lessonDate) {
+        this.lessonDate = lessonDate;
     }
 
-    public String getFinish() {
-        return finish;
+    public String getLessonPlace() {
+        return lessonPlace;
     }
 
-    public void setFinish(String finish) {
-        this.finish = finish;
+    public void setLessonPlace(String place) {
+        this.lessonPlace = place;
     }
 
-    public String getPlace() {
-        return place;
+    public Teacher getLessonTeacher() {
+        return lessonTeacher;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setLessonTeacher(Teacher lessonTeacher) {
+        this.lessonTeacher = lessonTeacher;
     }
 
     public Set<Student> getStudents() {
@@ -101,4 +88,5 @@ public class Lesson implements Serializable{
     public void setStudents(Set<Student> students) {
         this.students = students;
     }
+
 }
