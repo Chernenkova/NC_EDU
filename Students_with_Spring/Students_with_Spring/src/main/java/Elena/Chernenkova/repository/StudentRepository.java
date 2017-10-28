@@ -8,6 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by 123 on 20.09.2017.
  */
-public interface StudentRepository extends PagingAndSortingRepository<Student, Integer> {
+public interface StudentRepository extends JpaRepository<Student, Integer> {
 
 }

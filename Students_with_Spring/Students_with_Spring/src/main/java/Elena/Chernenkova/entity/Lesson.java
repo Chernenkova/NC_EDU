@@ -1,7 +1,12 @@
 package Elena.Chernenkova.entity;
 
+import Elena.Chernenkova.Service.LessonService;
+import Elena.Chernenkova.wrapper.LessonWrapper;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by 123 on 20.09.2017.
@@ -16,23 +21,27 @@ public class Lesson implements Serializable{
     @Column
     String lessonName;
     @Column
-    String start;
+    Date lessonDate;
     @Column
-    String finish;
+    String lessonPlace;
     @Column
-    String teacherName;
-    @Column
-    String place;
+    Integer lessonType;
 
-    public Lesson(String lessonName, String start, String finish, String teacherName, String place) {
-        this.lessonName = lessonName;
-        this.start = start;
-        this.finish = finish;
-        this.teacherName = teacherName;
-        this.place = place;
-    }
+    @ManyToOne(targetEntity = Teacher.class)
+    private Teacher lessonTeacher;
 
-    public Lesson() {
+    @ManyToMany(targetEntity = Student.class)
+    private Set<Student> students;
+
+    public Lesson() {}
+
+    public Lesson(LessonWrapper lessonWrapper, Teacher teacher, Set<Student> students) {
+        this.lessonName = lessonWrapper.getLessonName();
+        this.lessonDate = LessonService.toDate(lessonWrapper.getLessonDate());
+        this.lessonPlace = lessonWrapper.getLessonPlace();
+        this.lessonTeacher = teacher;
+        this.students = students;
+        this.lessonType = lessonWrapper.getType();
     }
 
     public Integer getLessonId() {
@@ -51,35 +60,43 @@ public class Lesson implements Serializable{
         this.lessonName = lessonName;
     }
 
-    public String getStart() {
-        return start;
+    public Date getLessonDate() {
+        return lessonDate;
     }
 
-    public void setStart(String start) {
-        this.start = start;
+    public void setLessonDate(Date lessonDate) {
+        this.lessonDate = lessonDate;
     }
 
-    public String getFinish() {
-        return finish;
+    public String getLessonPlace() {
+        return lessonPlace;
     }
 
-    public void setFinish(String finish) {
-        this.finish = finish;
+    public void setLessonPlace(String place) {
+        this.lessonPlace = place;
     }
 
-    public String getTeacherName() {
-        return teacherName;
+    public Teacher getLessonTeacher() {
+        return lessonTeacher;
     }
 
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
+    public void setLessonTeacher(Teacher lessonTeacher) {
+        this.lessonTeacher = lessonTeacher;
     }
 
-    public String getPlace() {
-        return place;
+    public Set<Student> getStudents() {
+        return students;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
+    public Integer getLessonType() {
+        return lessonType;
+    }
+
+    public void setLessonType(Integer type) {
+        this.lessonType = type;
     }
 }

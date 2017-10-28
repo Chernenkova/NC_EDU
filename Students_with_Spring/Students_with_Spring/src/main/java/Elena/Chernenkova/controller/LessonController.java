@@ -1,13 +1,24 @@
 package Elena.Chernenkova.controller;
 
-import Elena.Chernenkova.Service;
+import Elena.Chernenkova.Service.LessonService;
+import Elena.Chernenkova.Service.TeacherService;
 import Elena.Chernenkova.entity.Lesson;
+import Elena.Chernenkova.entity.Student;
+import Elena.Chernenkova.entity.Teacher;
 import Elena.Chernenkova.repository.LessonRepository;
+import Elena.Chernenkova.repository.StudentRepository;
+import Elena.Chernenkova.repository.TeacherRepository;
+import Elena.Chernenkova.wrapper.LessonWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by 123 on 29.09.2017.
@@ -15,62 +26,45 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/lessons")
 public class LessonController {
-    private final LessonRepository lessonRepository;
+    private LessonService lessonService;
 
     @Autowired
-    LessonController(LessonRepository lessonRepository) {
-        this.lessonRepository = lessonRepository;
+    LessonController(LessonService lessonService) {
+        this.lessonService = lessonService;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{lessonId}")
     ResponseEntity<Lesson> getLesson(@PathVariable Integer lessonId){
-        return new ResponseEntity<Lesson>(this.lessonRepository.findOne(lessonId), HttpStatus.OK);
+        return lessonService.getLesson(lessonId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    ResponseEntity getLessons(){
-        return new ResponseEntity<>(this.lessonRepository.
-                findAll(new Sort("lessonName")), HttpStatus.OK);
+    ResponseEntity getAllLessons(){
+        return lessonService.getAllLessons();
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    ResponseEntity<Lesson> createLesson(@RequestBody String json){
-        String lessonName = Service.findJson("lessonName", json);
-        String start = Service.findJson("start", json);
-        String finish = Service.findJson("finish", json);
-        String teacherName = Service.findJson("teacherName", json);
-        String place = Service.findJson("place", json);
-        Lesson newLesson = new Lesson(lessonName, start, finish, teacherName, place);
-        this.lessonRepository.save(newLesson);
-        return new ResponseEntity<Lesson>(newLesson, HttpStatus.CREATED);
+    ResponseEntity<Lesson> createLesson(@RequestBody LessonWrapper lessonWrapper){
+        return lessonService.createLesson(lessonWrapper);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{lessonId}")
-    ResponseEntity<Lesson> updateLesson(@RequestBody String json, @PathVariable Integer lessonId){
-        String lessonName = Service.findJson("lessonName", json);
-        String start = Service.findJson("start", json);
-        String finish = Service.findJson("finish", json);
-        String teacherName = Service.findJson("teacherName", json);
-        String place = Service.findJson("place", json);
-        Lesson currentLesson = this.lessonRepository.findOne(lessonId);
-        currentLesson.setLessonName(lessonName);
-        currentLesson.setStart(start);
-        currentLesson.setFinish(finish);
-        currentLesson.setTeacherName(teacherName);
-        currentLesson.setPlace(place);
-        this.lessonRepository.save(currentLesson);
-        return new ResponseEntity<Lesson>(currentLesson, HttpStatus.OK);
+    ResponseEntity<Lesson> updateLesson(@RequestBody LessonWrapper lessonWrapper, @PathVariable Integer lessonId){
+        return lessonService.updateLesson(lessonWrapper, lessonId);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{lessonId}")
     ResponseEntity deleteLesson(@PathVariable Integer lessonId){
-        this.lessonRepository.delete(lessonId);
-        return new ResponseEntity(HttpStatus.OK);
+        return lessonService.deleteLesson(lessonId);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
     ResponseEntity deleteAllLessons(){
-        this.lessonRepository.deleteAll();
-        return new ResponseEntity(HttpStatus.OK);
+        return lessonService.deleteAllLessons();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{lessonId}/students")
+    ResponseEntity<Lesson> getStudentsFromLesson(@PathVariable Integer lessonId) throws IOException{
+        return lessonService.getStudentsFromLesson(lessonId);
     }
 }

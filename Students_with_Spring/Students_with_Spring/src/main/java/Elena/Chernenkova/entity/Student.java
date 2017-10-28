@@ -1,7 +1,11 @@
 package Elena.Chernenkova.entity;
 
+import Elena.Chernenkova.wrapper.StudentsWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -11,7 +15,6 @@ import java.util.Set;
 @NamedQueries({ @NamedQuery(name = "Student.getStudent", query = "SELECT a FROM student a WHERE a.studentName = :studentName"),
                 @NamedQuery(name = "Student.getAllStudents", query = "SELECT a.studentName FROM student a")})
 public class Student implements Serializable{
-    //@JsonPoperty
 
     @Id
     @GeneratedValue
@@ -22,14 +25,15 @@ public class Student implements Serializable{
     @Column
     String studentNumber;
 
+    @JsonIgnore
     @ManyToOne(targetEntity = Department.class)
-    private Department department;
+    private Department studentDepartment;
 
-
-    public Student(String studentName, String studentNumber, Department department) {
-        this.studentName = studentName;
-        this.studentNumber = studentNumber;
-        this.department = department;
+    public Student(StudentsWrapper studentsWrapper, Department department) {
+        this.studentName = studentsWrapper.getStudentName();
+        this.studentNumber = studentsWrapper.getStudentNumber();
+        this.studentDepartment = department;
+        department.getStudents().add(this);
     }
 
     public Student() {
@@ -59,11 +63,11 @@ public class Student implements Serializable{
         this.studentNumber = student_Number;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Department getStudentDepartment() {
+        return studentDepartment;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setStudentDepartment(Department department) {
+        this.studentDepartment = department;
     }
 }

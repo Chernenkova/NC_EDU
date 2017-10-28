@@ -1,5 +1,8 @@
 package Elena.Chernenkova.entity;
 
+import Elena.Chernenkova.wrapper.DepartmentWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -23,9 +26,13 @@ public class Department implements Serializable{
     @Column
     String deanNumber;
 
-    @OneToMany(mappedBy = "department")
+    @JsonIgnore
+    @OneToMany(mappedBy = "studentDepartment")
     private Set<Student> students;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "teacherDepartment")
+    private Set<Teacher> teachers;
 
 
     public Department(String departmentName, String deanName, String deanNumber) {
@@ -33,6 +40,14 @@ public class Department implements Serializable{
         this.deanName = deanName;
         this.deanNumber = deanNumber;
         this.students = new HashSet<>();
+        this.teachers = new HashSet<>();
+    }
+    public Department(DepartmentWrapper departmentWrapper) {
+        this.departmentName = departmentWrapper.getDepartmentName();
+        this.deanName = departmentWrapper.getDeanName();
+        this.deanNumber = departmentWrapper.getDeanNumber();
+        this.students = new HashSet<>();
+        this.teachers = new HashSet<>();
     }
 
     public Department() {}
@@ -75,5 +90,13 @@ public class Department implements Serializable{
 
     public void setStudents(Set<Student> students) {
         this.students = students;
+    }
+
+    public Set<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(Set<Teacher> teachers) {
+        this.teachers = teachers;
     }
 }

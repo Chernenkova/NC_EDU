@@ -1,7 +1,12 @@
 package Elena.Chernenkova.entity;
 
+import Elena.Chernenkova.wrapper.TeacherWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by 123 on 12.09.2017.
@@ -15,21 +20,25 @@ public class Teacher implements Serializable{
     @GeneratedValue
     private Integer teacherId;
 
-
     @Column
     String teacherName;
     @Column
     String teacherNumber;
 
-/*
+    @JsonIgnore
     @ManyToOne(targetEntity = Department.class)
-    private Department department;
-*/
+    private Department teacherDepartment;
 
+    @JsonIgnore
+    @OneToMany(targetEntity = Lesson.class)
+    private Set<Lesson> teacherLessons;
 
-    public Teacher(String teacherName, String teacherNumber) {
-        this.teacherName = teacherName;
-        this.teacherNumber = teacherNumber;
+    public Teacher(TeacherWrapper teacherWrapper, Department department) {
+        this.teacherName = teacherWrapper.getTeacherName();
+        this.teacherNumber = teacherWrapper.getTeacherNumber();
+        this.teacherDepartment = department;
+        this.teacherLessons = new HashSet<>();
+        department.getTeachers().add(this);
     }
 
     public Teacher() {}
@@ -56,5 +65,21 @@ public class Teacher implements Serializable{
 
     public void setTeacherNumber(String teacherNumber) {
         this.teacherNumber = teacherNumber;
+    }
+
+    public Department getTeacherDepartment() {
+        return teacherDepartment;
+    }
+
+    public void setTeacherDepartment(Department department) {
+        this.teacherDepartment = department;
+    }
+
+    public Set<Lesson> getTeacherLessons() {
+        return teacherLessons;
+    }
+
+    public void setTeacherLessons(Set<Lesson> lessons) {
+        this.teacherLessons = lessons;
     }
 }
