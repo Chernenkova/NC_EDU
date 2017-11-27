@@ -24,3 +24,6 @@ hs_err_pid*
 Students_with_Spring/.idea/*
 Students_with_Spring/target/*
 Students_with_Spring/log.txt
+SpringSecurityExample/.idea/*
+SpringSecurityExample/target/*
+SpringSecurityExample/log.txt
